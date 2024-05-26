@@ -2,19 +2,16 @@ package dev.bruno.plugins
 
 import dev.bruno.controller.taskRoute
 import dev.bruno.controller.userRoute
+import dev.bruno.service.TaskService
+import dev.bruno.service.UserService
 import io.ktor.server.application.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.configureRouting() {
+fun Application.configureRouting(taskService: TaskService, userService: UserService) {
     routing {
-        get {
-            call.respond(mapOf("message" to "Hello, World!"))
-        }
-
         route("/v1") {
-            userRoute()
-            taskRoute()
+            userRoute(userService)
+            taskRoute(taskService)
         }
     }
 }

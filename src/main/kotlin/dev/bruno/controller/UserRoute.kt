@@ -11,9 +11,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.userRoute() {
-    val userRepository = UserRepository()
-    val userService = UserService(userRepository)
+fun Route.userRoute(userService: UserService) {
 
     post("/auth/sign-up") {
         val user = call.receive<UserSignUpRequest>()
@@ -35,8 +33,8 @@ fun Route.userRoute() {
         val user = call.receive<UserSignInRequest>()
 
         try {
-            val id = userService.signIn(user)
-            call.respond(mapOf("id" to id))
+            val token = userService.signIn(user)
+            call.respond(mapOf("token" to token))
         } catch (e: Exception) {
             if (e is BadRequestException) {
                 call.respond(

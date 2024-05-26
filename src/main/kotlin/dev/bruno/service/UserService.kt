@@ -5,9 +5,11 @@ import dev.bruno.domain.request.UserSignInRequest
 import dev.bruno.domain.request.UserSignUpRequest
 import io.ktor.server.plugins.*
 import org.mindrot.jbcrypt.BCrypt
+import java.util.*
 
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val jwtService: JwtService
 ) {
 
     suspend fun signUp(user: UserSignUpRequest) {
@@ -34,6 +36,10 @@ class UserService(
             throw BadRequestException("Invalid credentials")
         }
 
-        return userFounded.id
+        val token = jwtService.createToken(userFounded.id)
+
+        return token
     }
+
+    suspend fun findById(id: String) = userRepository.findById(UUID.fromString(id))
 }
