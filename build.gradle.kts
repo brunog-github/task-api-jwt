@@ -48,6 +48,9 @@ dependencies {
     // Log
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    // Bcrypt
+    implementation("org.mindrot:jbcrypt:0.4")
+
     // Test
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
