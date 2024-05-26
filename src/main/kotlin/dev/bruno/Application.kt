@@ -1,5 +1,7 @@
 package dev.bruno
 
+import dev.bruno.data.model.TaskTable
+import dev.bruno.data.model.UserTable
 import dev.bruno.plugins.*
 import io.ktor.server.application.*
 
@@ -16,5 +18,5 @@ fun Application.module() {
     configureRouting()
     configureSwagger()
 
-    // generateExposedSql() // to generate sql code for flyway use.
+    //generateExposedSql() // to generate sql code for flyway use.
 }

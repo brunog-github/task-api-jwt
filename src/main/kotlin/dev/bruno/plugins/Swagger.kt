@@ -10,6 +10,8 @@ fun Application.configureSwagger() {
         swaggerUI(
             path = "swagger",
             swaggerFile = "src/main/resources/openapi/documentation.json"
-        )
+        ) {
+            version = "5.17.12"
+        }
     }
 }
