@@ -51,14 +51,10 @@ class TaskRepository {
             .single()
     }
 
-    suspend fun update(userId: UUID, taskId: UUID, task: TaskUpdateRequest) = dbQuery {
-        TaskTable.updateReturning(
-            where = { (TaskTable.userId eq userId) and (TaskTable.id eq taskId) }
-        ) {
-            task.title?.let { titleToUpdate -> it[title] = titleToUpdate }
-            it[description] = task.description
-            it[updatedAt] = CurrentDateTime
-        }
+    suspend fun getById(userId: UUID, taskId: UUID): TaskEntity? = dbQuery {
+        TaskTable
+            .selectAll()
+            .where { (TaskTable.userId eq userId) and (TaskTable.id eq taskId) }
             .map {
                 TaskEntity(
                     id = it[TaskTable.id].toString(),
@@ -69,7 +65,17 @@ class TaskRepository {
                     updatedAt = it[TaskTable.updatedAt]
                 )
             }
-            .single()
+            .singleOrNull()
+    }
+
+    suspend fun update(userId: UUID, taskId: UUID, task: TaskUpdateRequest): Boolean = dbQuery {
+        TaskTable.update(
+            where = { (TaskTable.userId eq userId) and (TaskTable.id eq taskId) }
+        ) {
+            task.title?.let { titleToUpdate -> it[title] = titleToUpdate }
+            it[description] = task.description
+            it[updatedAt] = CurrentDateTime
+        } > 0
     }
 
     suspend fun delete(userId: UUID, taskId: UUID): Boolean = dbQuery {

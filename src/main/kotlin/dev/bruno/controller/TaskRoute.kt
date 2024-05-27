@@ -40,6 +40,18 @@ fun Route.taskRoute() {
             }
         }
 
+        get("/tasks/{id}") {
+            val id = call.parameters["id"].orEmpty()
+            val userId = extractUserId(call)
+
+            val task = taskService.getById(
+                userId = userId,
+                taskId = id
+            )
+
+            call.respond(task)
+        }
+
         put("/tasks/{id}") {
             val id = call.parameters["id"].orEmpty()
             val task = call.receive<TaskUpdateRequest>()

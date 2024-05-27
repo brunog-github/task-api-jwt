@@ -33,6 +33,17 @@ fun Application.configureErrorHandler() {
             )
         }
 
+        exception<NotFoundException> { call, cause ->
+            call.respond(
+                status = HttpStatusCode.NotFound,
+                message = ErrorResponse(
+                    code = HttpStatusCode.NotFound.value,
+                    status = HttpStatusCode.NotFound.description,
+                    message = cause.message
+                )
+            )
+        }
+
         exception<RequestValidationException> { call, cause ->
             call.respond(
                 status = HttpStatusCode.BadRequest,

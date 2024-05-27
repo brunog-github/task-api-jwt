@@ -21,12 +21,29 @@ class TaskService(
     suspend fun getAll(userId: String): List<TaskEntity> =
         taskRepository.getAll(userId = UUID.fromString(userId))
 
-    suspend fun update(userId: String, taskId: String, task: TaskUpdateRequest): TaskEntity {
-        return taskRepository.update(
+    suspend fun getById(userId: String, taskId: String): TaskEntity {
+        val task = taskRepository.getById(
+            userId = UUID.fromString(userId),
+            taskId = UUID.fromString(taskId)
+        )
+
+        if (task === null) {
+            throw NotFoundException("Task not found or does not belong to the user.")
+        }
+
+        return task
+    }
+
+    suspend fun update(userId: String, taskId: String, task: TaskUpdateRequest) {
+        val result = taskRepository.update(
             userId = UUID.fromString(userId),
             taskId = UUID.fromString(taskId),
             task = task
         )
+
+        if (result.not()) {
+            throw NotFoundException("Task not found or does not belong to this user.")
+        }
     }
 
     suspend fun delete(userId: String, taskId: String) {
