@@ -93,11 +93,11 @@ ktor {
         port = ${?PORT}
     }
     application {
-        modules = [ com.example.ApplicationKt.module ]
+        modules = [ dev.bruno.ApplicationKt.module ]
     }
 }
 
-database {
+postgres {
     driver = "org.postgresql.Driver"
     url = "jdbc:postgresql://localhost:5432/taskdb"
     user = "your-db-user"
