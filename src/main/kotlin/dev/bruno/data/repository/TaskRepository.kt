@@ -3,8 +3,10 @@ package dev.bruno.data.repository
 import dev.bruno.data.model.TaskTable
 import dev.bruno.domain.entity.TaskEntity
 import dev.bruno.domain.request.CreateTaskRequest
+import dev.bruno.domain.request.TaskUpdateRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import java.util.UUID
 
@@ -36,6 +38,27 @@ class TaskRepository {
                 it[description] = taskRequest.description
                 it[TaskTable.userId] = userId
             }
+            .map {
+                TaskEntity(
+                    id = it[TaskTable.id].toString(),
+                    title = it[TaskTable.title],
+                    description = it[TaskTable.description],
+                    userId = it[TaskTable.userId].toString(),
+                    createdAt = it[TaskTable.createdAt],
+                    updatedAt = it[TaskTable.updatedAt]
+                )
+            }
+            .single()
+    }
+
+    suspend fun update(userId: UUID, taskId: UUID, task: TaskUpdateRequest) = dbQuery {
+        TaskTable.updateReturning(
+            where = { (TaskTable.userId eq userId) and (TaskTable.id eq taskId) }
+        ) {
+            task.title?.let { titleToUpdate -> it[title] = titleToUpdate }
+            it[description] = task.description
+            it[updatedAt] = CurrentDateTime
+        }
             .map {
                 TaskEntity(
                     id = it[TaskTable.id].toString(),

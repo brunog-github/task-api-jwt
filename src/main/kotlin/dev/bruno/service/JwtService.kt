@@ -2,15 +2,15 @@ package dev.bruno.service
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.server.application.*
+import io.ktor.server.config.*
 import java.util.Date
 
 class JwtService(
-    private val application: Application
+    private val application: ApplicationConfig
 ) {
 
     private fun getConfigProperty(path: String) =
-        application.environment.config.property(path).getString()
+        application.property(path).getString()
 
     private val secret = getConfigProperty("jwt.secret")
     private val audience = getConfigProperty("jwt.audience")

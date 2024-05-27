@@ -51,6 +51,13 @@ dependencies {
     // Bcrypt
     implementation("org.mindrot:jbcrypt:0.4")
 
+    // Validation
+    implementation("io.ktor:ktor-server-request-validation")
+
+    // Koin for Kotlin apps
+    implementation("io.insert-koin:koin-ktor:3.5.6")
+    implementation("io.insert-koin:koin-logger-slf4j:3.5.6")
+
     // Test
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

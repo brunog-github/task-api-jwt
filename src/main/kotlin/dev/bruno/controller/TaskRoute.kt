@@ -1,6 +1,7 @@
 package dev.bruno.controller
 
 import dev.bruno.domain.request.CreateTaskRequest
+import dev.bruno.domain.request.TaskUpdateRequest
 import dev.bruno.service.TaskService
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -10,8 +11,11 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
-fun Route.taskRoute(taskService: TaskService) {
+fun Route.taskRoute() {
+
+    val taskService by inject<TaskService>()
 
     authenticate {
         get("/tasks") {
@@ -34,6 +38,20 @@ fun Route.taskRoute(taskService: TaskService) {
                     )
                 }
             }
+        }
+
+        put("/tasks/{id}") {
+            val id = call.parameters["id"].orEmpty()
+            val task = call.receive<TaskUpdateRequest>()
+            val userId = extractUserId(call)
+
+            taskService.update(
+                userId = userId,
+                taskId = id,
+                task = task
+            )
+
+            call.respond(HttpStatusCode.NoContent)
         }
 
         delete("/tasks/{id}") {

@@ -3,6 +3,7 @@ package dev.bruno.service
 import dev.bruno.data.repository.TaskRepository
 import dev.bruno.domain.entity.TaskEntity
 import dev.bruno.domain.request.CreateTaskRequest
+import dev.bruno.domain.request.TaskUpdateRequest
 import io.ktor.server.plugins.*
 import java.util.*
 
@@ -20,6 +21,13 @@ class TaskService(
     suspend fun getAll(userId: String): List<TaskEntity> =
         taskRepository.getAll(userId = UUID.fromString(userId))
 
+    suspend fun update(userId: String, taskId: String, task: TaskUpdateRequest): TaskEntity {
+        return taskRepository.update(
+            userId = UUID.fromString(userId),
+            taskId = UUID.fromString(taskId),
+            task = task
+        )
+    }
 
     suspend fun delete(userId: String, taskId: String) {
         val result = taskRepository.delete(

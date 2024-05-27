@@ -9,12 +9,15 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.*
 import io.ktor.server.response.*
+import org.koin.ktor.ext.inject
 
-fun Application.configureSecurity(userService: UserService) {
+fun Application.configureSecurity() {
     val jwtAudience = environment.config.propertyOrNull("jwt.audience")?.getString()
     val jwtDomain = environment.config.propertyOrNull("jwt.domain")?.getString()
     val jwtRealm = environment.config.propertyOrNull("jwt.realm")?.getString()
     val jwtSecret = environment.config.propertyOrNull("jwt.secret")?.getString()
+
+    val userService by inject<UserService>()
 
     if (jwtAudience.isNullOrEmpty()
         || jwtDomain.isNullOrEmpty()

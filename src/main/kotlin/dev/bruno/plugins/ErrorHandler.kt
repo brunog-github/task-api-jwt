@@ -1,8 +1,11 @@
 package dev.bruno.plugins
 
 import dev.bruno.domain.exception.JwtExpiredException
+import dev.bruno.domain.response.ErrorResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
+import io.ktor.server.plugins.requestvalidation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 
@@ -11,12 +14,45 @@ fun Application.configureErrorHandler() {
         exception<JwtExpiredException> { call, cause ->
             call.respond(
                 status = HttpStatusCode.Unauthorized,
-                message = mapOf("message" to cause.message)
+                message = ErrorResponse(
+                    code = HttpStatusCode.Unauthorized.value,
+                    status = HttpStatusCode.Unauthorized.description,
+                    message = cause.message
+                )
+            )
+        }
+
+        exception<BadRequestException> { call, cause ->
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = ErrorResponse(
+                    code = HttpStatusCode.BadRequest.value,
+                    status = HttpStatusCode.BadRequest.description,
+                    message = cause.message
+                )
+            )
+        }
+
+        exception<RequestValidationException> { call, cause ->
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = ErrorResponse(
+                    code = HttpStatusCode.BadRequest.value,
+                    status = HttpStatusCode.BadRequest.description,
+                    message = cause.reasons.joinToString()
+                )
             )
         }
 
         exception<Throwable> { call, cause ->
-            call.respondText(text = "500: $cause" , status = HttpStatusCode.InternalServerError)
+            call.respond(
+                status = HttpStatusCode.InternalServerError,
+                message = ErrorResponse(
+                    code = HttpStatusCode.InternalServerError.value,
+                    status = HttpStatusCode.InternalServerError.description,
+                    message = cause.message
+                )
+            )
         }
     }
 }
