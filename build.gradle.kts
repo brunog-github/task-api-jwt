@@ -19,6 +19,10 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
+application {
+    mainClass.set("dev.bruno.ApplicationKt")
+}
+
 repositories {
     mavenCentral()
 }
