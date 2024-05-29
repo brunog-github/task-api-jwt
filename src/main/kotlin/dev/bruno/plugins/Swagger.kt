@@ -9,7 +9,7 @@ fun Application.configureSwagger() {
     routing {
         swaggerUI(
             path = "swagger",
-            swaggerFile = "src/main/resources/openapi/documentation.json"
+            swaggerFile = "resources/openapi/documentation.json"
         ) {
             version = "5.17.12"
         }
