@@ -15,7 +15,7 @@ fun Application.configureDatabases() {
     }
 
     val database = Database.connect(
-        url = url,
+        url = "jdbc:$url",
         user = user,
         password = password,
         driver = driver

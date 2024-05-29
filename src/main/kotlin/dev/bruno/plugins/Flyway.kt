@@ -8,6 +8,6 @@ fun Application.configureFlyway() {
     val user = environment.config.propertyOrNull("postgres.user")?.getString()
     val password = environment.config.propertyOrNull("postgres.password")?.getString()
 
-    val flyway = Flyway.configure().dataSource(url, user, password).load()
+    val flyway = Flyway.configure().dataSource("jdbc:$url", user, password).load()
     flyway.migrate()
 }
