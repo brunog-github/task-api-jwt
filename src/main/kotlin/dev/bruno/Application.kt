@@ -9,10 +9,9 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     configureCors()
+    configureDatabases()
     configureKoin()
     configureSerialization()
-    configureDatabases()
-    configureFlyway()
     configureSecurity()
     configureErrorHandler()
     configureRouting()

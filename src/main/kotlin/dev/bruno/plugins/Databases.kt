@@ -21,5 +21,7 @@ fun Application.configureDatabases() {
         driver = driver
     )
 
-    transaction(database) {}
+    transaction(database) {
+        configureFlyway()
+    }
 }
