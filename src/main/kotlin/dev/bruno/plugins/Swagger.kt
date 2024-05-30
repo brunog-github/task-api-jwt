@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 
 fun Application.configureSwagger() {
     routing {
-        swaggerUI(path = "swagger") {
+        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json") {
             version = "5.17.12"
         }
     }
