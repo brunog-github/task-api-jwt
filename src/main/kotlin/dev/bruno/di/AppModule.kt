@@ -12,10 +12,10 @@ import org.koin.dsl.module
 val appModule = module {
     single<ApplicationConfig> { ApplicationConfig(CONFIG_PATH) }
 
-    single { UserRepository() }
-    single { TaskRepository() }
+    single<UserRepository> { UserRepository() }
+    single<TaskRepository> { TaskRepository() }
 
-    single { JwtService(get()) }
-    single { UserService(get(), get()) }
-    single { TaskService(get()) }
+    single<JwtService> { JwtService(get()) }
+    single<UserService> { UserService(get(), get()) }
+    single<TaskService> { TaskService(get()) }
 }

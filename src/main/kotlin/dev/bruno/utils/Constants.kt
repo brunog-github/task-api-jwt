@@ -11,5 +11,5 @@ object Constants {
     const val PASSWORD_MAX_LENGTH = 200
 
     // Config
-    const val CONFIG_PATH = "src/main/resources/application.conf"
+    const val CONFIG_PATH = "application.conf"
 }
